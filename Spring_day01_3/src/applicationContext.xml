@@ -23,4 +23,15 @@
 		<property name="password" value="ypy"></property>
 	</bean>
 
+	<!-- 先将数据源注入模板 -->
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<constructor-arg>
+			<ref bean="dataSourceC3p0"/>
+		</constructor-arg>
+	</bean>
+
+	<!-- 然后将模板注入dao中 -->
+	<bean id="userDao" class="com.ypy.dao.UserDao">
+		<property name="template" ref="jdbcTemplate"></property>
+	</bean>
 </beans>
