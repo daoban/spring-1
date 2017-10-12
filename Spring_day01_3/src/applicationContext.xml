@@ -31,7 +31,17 @@
 	</bean>
 
 	<!-- 然后将模板注入dao中 -->
-	<bean id="userDao" class="com.ypy.dao.UserDao">
+	<bean id="userJdbcTemplateDao" class="com.ypy.dao.UserJdbcTemplateDao">
 		<property name="template" ref="jdbcTemplate"></property>
+	</bean>
+	
+	<bean id="namedParameterJdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+		<constructor-arg>
+			<ref bean="dataSourceC3p0"/>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="userNamedParameterJdbcTemplateDao" class="com.ypy.dao.UserNamedParameterJdbcTemplateDao">
+		<property name="template" ref="namedParameterJdbcTemplate"></property>
 	</bean>
 </beans>

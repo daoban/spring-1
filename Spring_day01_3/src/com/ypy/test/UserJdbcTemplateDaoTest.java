@@ -7,10 +7,10 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.ypy.dao.UserDao;
+import com.ypy.dao.UserJdbcTemplateDao;
 import com.ypy.model.UserModel;
 
-public class DBTest {
+public class UserJdbcTemplateDaoTest {
 	/*@Test
 	public void testDBCP() throws SQLException {
 		ApplicationContext ac = new ClassPathXmlApplicationContext("applicationContext.xml");
@@ -28,28 +28,28 @@ public class DBTest {
 	@Test
 	public void testSave() throws SQLException {
 		ApplicationContext ac = new ClassPathXmlApplicationContext("applicationContext.xml");
-		UserDao dao = ac.getBean(UserDao.class);
+		UserJdbcTemplateDao dao = ac.getBean(UserJdbcTemplateDao.class);
 		dao.save();
 	}
 	
 	@Test
 	public void testDelete() throws SQLException {
 		ApplicationContext ac = new ClassPathXmlApplicationContext("applicationContext.xml");
-		UserDao dao = ac.getBean(UserDao.class);
+		UserJdbcTemplateDao dao = ac.getBean(UserJdbcTemplateDao.class);
 		dao.delete();
 	}
 	
 	@Test
 	public void testUpdate() throws SQLException {
 		ApplicationContext ac = new ClassPathXmlApplicationContext("applicationContext.xml");
-		UserDao dao = ac.getBean(UserDao.class);
+		UserJdbcTemplateDao dao = ac.getBean(UserJdbcTemplateDao.class);
 		dao.update();
 	}
 	
 	@Test
 	public void testQuery() throws SQLException {
 		ApplicationContext ac = new ClassPathXmlApplicationContext("applicationContext.xml");
-		UserDao dao = ac.getBean(UserDao.class);
+		UserJdbcTemplateDao dao = ac.getBean(UserJdbcTemplateDao.class);
 		List<UserModel> list = dao.query();
 		for (UserModel userModel : list) {
 			System.out.println(userModel);
@@ -59,7 +59,7 @@ public class DBTest {
 	@Test
 	public void testQueryForOne() throws SQLException {
 		ApplicationContext ac = new ClassPathXmlApplicationContext("applicationContext.xml");
-		UserDao dao = ac.getBean(UserDao.class);
+		UserJdbcTemplateDao dao = ac.getBean(UserJdbcTemplateDao.class);
 		UserModel user = dao.queryForOne();
 		System.out.println(user);
 	}
@@ -67,7 +67,7 @@ public class DBTest {
 	@Test
 	public void testQueryCount() throws SQLException {
 		ApplicationContext ac = new ClassPathXmlApplicationContext("applicationContext.xml");
-		UserDao dao = ac.getBean(UserDao.class);
+		UserJdbcTemplateDao dao = ac.getBean(UserJdbcTemplateDao.class);
 		int count = dao.queryCount();
 		System.out.println(count);
 	}

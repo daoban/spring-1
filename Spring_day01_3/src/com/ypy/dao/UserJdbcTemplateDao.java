@@ -8,7 +8,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import com.ypy.model.UserModel;
 
-public class UserDao {
+public class UserJdbcTemplateDao {
 	private JdbcTemplate template;
 	private String sql;
 
