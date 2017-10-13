@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.1.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.1.xsd">
+		
+		<bean id="dataSourceDBCP" class="org.apache.commons.dbcp.BasicDataSource"
+			destroy-method="close">
+			<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
+			<property name="url" value="jdbc:oracle:thin:@localhost:1521:XE " />
+			<property name="username" value="ypy" />
+			<property name="password" value="ypy" />
+		</bean>
+		
+		<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+			<constructor-arg>
+				<ref bean="dataSourceDBCP"/>
+			</constructor-arg>
+		</bean>
+		
+		<!-- 配置扫描 -->
+		<context:component-scan base-package="com.ypy.service,com.ypy.dao"></context:component-scan>
+
+		<!-- 切面类 -->
+		<bean id="logUtils" class="com.ypy.utils.LogUtils"></bean>	
+		
+		<!-- 配置aop日志管理 -->
+		<aop:config>
+			<!-- 配置切面类 -->
+			<aop:aspect ref="logUtils">
+				<!-- 配置切入点 -->
+				                                     <!-- 表示此包下所有类的所有方法都会被aop处理，..表示任意形参 -->
+				<aop:pointcut expression="execution(* com.ypy.service.*.*(..))" id="logPointcut"/>
+				<!-- 配置什么时候进行拦截 -->
+				<aop:before method="beforeMethod" pointcut-ref="logPointcut"/>   <!-- 在切入点之前拦截 -->
+				<aop:after method="afterMethod" pointcut-ref="logPointcut"/>   <!-- 在切入点之后拦截 -->
+			</aop:aspect>
+		</aop:config>
+		
+		<!-- 配置aop事务 -->
+		<aop:config>
+			<!-- 配置切入点 -->
+			                                     <!-- 表示此包下所有类的所有方法都会被aop处理，..表示任意形参 -->
+			<aop:pointcut expression="execution(* com.ypy.service.*.*(..))" id="txPointcut"/>
+			<!-- 配置连接点 -->
+			<aop:advisor advice-ref="txadvice" pointcut-ref="txPointcut"/>
+		</aop:config>
+		
+		<!-- 切面类 -->
+		<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+			<!-- 设置数据源 -->
+			<constructor-arg>
+				<ref bean="dataSourceDBCP"/>
+			</constructor-arg>
+		</bean>
+		<!-- 配置连接点 -->
+		<tx:advice id="txadvice" transaction-manager="txManager">
+			<!-- 设置事务的传播属性，其实就是   事务管理嵌套事务 -->
+			<tx:attributes>
+				<tx:method name="save*" propagation="REQUIRED"/>
+			</tx:attributes>
+		</tx:advice>
+</beans>
